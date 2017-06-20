@@ -1,0 +1,82 @@
+﻿
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/png" href="http://faviconka.ru/ico/faviconka_ru_1002.png">
+
+    <style type="text/css">
+        body {
+            font-size: 14px;
+        }
+
+        label {
+            float: left;
+            padding-right: 10px;
+        }
+
+        .field {
+            clear: both;
+            text-align: right;
+            line-height: 25px;
+        }
+
+        .main {
+            float: left;
+        }
+    </style>
+
+</head>
+
+<body>
+    <form method="post" action="">
+        <div class="main">
+            <div class="field">
+                <label for="sn">Фамилия</label>
+                <input type="text" name="second_name" value="%(second_name)s" id="sn">
+            </div>
+
+            <div class="field">
+                <label for="fn">Имя</label>
+                <input type="text" name="first_name" value="%(first_name)s" id="fn">
+            </div>
+
+            <div class="field">
+                <label for="pt">Отчество</label>
+                <input type="text" name="patronymic" value="%(patronymic)s" id="pt">
+            </div>
+
+            <div class="field">
+                <label for="reg">Регион</label>
+                <input type="text" name="region" value="%(region)s" id="reg">
+            </div>
+
+            <div class="field">
+                <label for="ct">Город</label>
+                <input type="text" name="city" value="%(city)s" id="ct">
+            </div>
+
+            <div class="field">
+                <label for="ph">Телефон</label>
+                <input type="text" name="phone" value="%(phone)s" id="ph">
+            </div>
+
+            <div class="field">
+                <label for="email">E-mail</label>
+                <input type="text" name="email" value="%(email)s" id="email">
+            </div>
+
+            <div class="field">
+                <label for="cm">Комментарий</label>
+                <input type="text" name="comment" value="%(comment)s" id="cm">
+            </div>
+            <div>
+                (*) - обязательное поле
+            </div>
+            <input type="submit" value="Отправить">
+        </div>
+    </form>
+</body>
+
+</html>
+
