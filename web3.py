@@ -3,10 +3,12 @@
 
 import sqlite3
 from wsgiref.simple_server import make_server
-from cgi import escape
+from cgi import escape, parse_qs
 #from html import escape
-from urlparse import parse_qs
+#from urlparse import parse_qs
 #from urllib.parse import parse_qs
+import json
+
 
 data_structure = [
     [{'name': 'Краснодарский край',
@@ -27,8 +29,7 @@ def inspect_db():
     cursor_obj = connect_to_db.cursor()
 
     with open('sql_script.sql', 'r') as sql_script_file:
-        sql_script_str = ''.join(sql_script_file.readlines())
-    
+        sql_script_str = ''.join(sql_script_file)
 
     cursor_obj.executescript(sql_script_str)
 
@@ -52,9 +53,10 @@ def inspect_db():
     cursor_obj.close()
     connect_to_db.close()
 
+
 def get_html():
     with open('index.html', 'r') as html_file:
-        html_str = ''.join(html_file.readlines())
+        html_str = ''.join(html_file)
 
     return html_str
 
@@ -78,7 +80,7 @@ def web3_app(environ, start_response):
         second_name = escape(second_name)
         patronymic = req_values.get('patronymic', [''])[0]
         patronymic = escape(patronymic)
-        region = req_values.get('region', [''])[0]
+        region = req_values.get('regions', [''])[0]
         region = escape(region)
         city = req_values.get('city', [''])[0]
         city = escape(city)
@@ -87,7 +89,7 @@ def web3_app(environ, start_response):
         email = req_values.get('email', [''])[0]
         email = escape(email)
         comment = req_values.get('comment', [''])[0]
-        comment= escape(comment)
+        comment = escape(comment)
 
         html = get_html()
         body = html % {
@@ -109,9 +111,25 @@ def web3_app(environ, start_response):
         start_response(status, response_headers)
         return [body]
 
-if __name__ == '__main__':
+    elif environ['PATH_INFO'] == '/get_regions':
+        connect_to_db = sqlite3.connect('web3.sqlite3')
+        cursor_obj = connect_to_db.cursor()
+        cursor_obj.execute('''SELECT region_name FROM regions''')
+        sel_data = cursor_obj.fetchall()
+        reg_list = [reg_name[0] for reg_name in sel_data]
+        body = json.dumps({'regions': reg_list})
+
+        status = '200 OK'
+        response_headers = [
+            ('Content-Type', 'application/json'),
+            ('Content-Length', str(len(body)))
+        ]
+        start_response(status, response_headers)
+        return [body]
+
+
     # Instantiate the server
-    httpd = make_server ('localhost', 8051, web3_app)
-    httpd.serve_forever()
+httpd = make_server ('localhost', 8051, web3_app)
+httpd.serve_forever()
 
 

@@ -1,5 +1,4 @@
-﻿
-<html>
+﻿<html>
 
 <head>
     <meta charset='utf-8'>
@@ -29,7 +28,7 @@
 </head>
 
 <body>
-    <form method="post" action="">
+    <form method="post" action="" name = "web3">
         <div class="main">
             <div class="field">
                 <label for="sn">Фамилия</label>
@@ -47,13 +46,45 @@
             </div>
 
             <div class="field">
-                <label for="reg">Регион</label>
-                <input type="text" name="region" value="%(region)s" id="reg">
+                <select name="regions">
+                    <option name="region" value="%(region)s" disabled>Выберите значение</option>
+                </select>
+
+                <script>
+                    var web3Form = document.forms.web3;
+                    var select = web3Form.elements.regions;
+                    var requestObj = new XMLHttpRequest();
+                    requestObj.open('GET', 'http://localhost:8051/get_regions', false);
+                    requestObj.send();
+
+                    if (requestObj.status != 200) {
+                        alert(requestObj.status + ': ' + requestObj.statusText);
+                    } else {
+                        //alert(select.options[0].value);
+                        var responsData = JSON.parse(requestObj.responseText);
+                        var regions = responsData.regions;
+
+                        for (reg in regions) {
+                            var option = new Option(regions[reg],regions[reg])
+                            if (option.value == select.options[0].value) {
+                                option.selected = true
+                            }
+                            select.appendChild(option)
+                        }
+                        }
+
+                </script>
+
+
             </div>
 
             <div class="field">
                 <label for="ct">Город</label>
-                <input type="text" name="city" value="%(city)s" id="ct">
+                <select id="ct">
+                    <option>Город 1</option>
+                    <option>Город 2</option>
+                    <option>Город 3</option>
+                </select>
             </div>
 
             <div class="field">

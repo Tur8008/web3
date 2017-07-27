@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 from wsgiref.simple_server import make_server
-from cgi import escape
-from urlparse import parse_qs
+from cgi import escape, parse_qs
+#from urllib.parse import parse_qs
 
 html = """
 <html>
